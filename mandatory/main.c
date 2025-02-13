@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/10 17:19:58 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:27:44 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,5 @@ int main(int ac, char **av, char **envp)
             continue ;
         handle_imput(&h, h.tail->line, envp);
     }
+    printf("Bye !\n");
 }
