@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/14 12:51:31 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:35:53 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_tree
     char            **env;
     char            *file1;
     char            *is_pipe;
-    int                     mod;
     struct s_tree *tleft;
     struct s_tree *tright;
     struct s_tree *parent;
@@ -56,6 +55,8 @@ typedef struct s_tree
 typedef struct s_commands
 {
     t_tree  *root;
+    int     index;
+    int     mod;
     struct s_commands   *next;
 }           t_commands;
 
@@ -92,12 +93,12 @@ void    disableRawMode(void);
 void    enableRawMode(void);
 
 /* Fonctions de Parsing */
-t_commands  *ft_ultimate_parse(char **args, char **envp, t_history *h);
+t_commands  *ft_ultimate_parse(char **args, char **envp);
 t_commands	*ft_lstnew(char **args, char **envp, int *i, int mod);
 t_commands	*ft_lstlast(t_commands *lst);
 void        ft_lstadd_back(t_commands **lst, t_commands *new);
 void        ft_lstclear(t_commands **lst);
-void        ft_verif(t_commands **list, char *str);
+int         ft_verif(t_commands **list, char *str);
 char        *ft_find_cmd(char *cmd);
 
 /* Fonctions pour Executer */

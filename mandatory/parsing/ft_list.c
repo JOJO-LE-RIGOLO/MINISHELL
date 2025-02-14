@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:21:40 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/14 12:53:37 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:36:20 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ void    clean_tree(t_tree *tr)
         return ;
     clean_tree(tr->tleft);
     clean_tree(tr->tright);
+	if (tr->is_pipe)
+		free(tr->is_pipe);
+	if (tr->path)
+		free(tr->path);
+	if (tr->args)
+		ft_cleartab(tr->args);
     free(tr);
 }
 
@@ -68,7 +74,35 @@ t_tree    *new_tree(char *operation)
     return (tr);
 }
 
-t_tree    *new_node(char **args, char **envp)
+char	**split_args(t_commands *li, char **args, int *i)
+{
+	char	*tmp;
+	char	*cmd;
+	char	**cmd_args;
+
+	tmp = ft_strjoin(args[0], " ");
+	if (!tmp)
+		return (NULL);
+	while (li->index < *i - 1)
+	{
+		cmd = ft_strjoin(tmp, args[li->index]);
+		if (!cmd)
+			return (free(tmp), NULL);
+		free(tmp);
+		if (args[li->index + 1])
+			tmp = ft_strjoin(args[li->index + 1], " ");
+		if (!tmp)
+			return (free(cmd), NULL);
+		li->index++;
+	}
+	cmd_args = ft_split(cmd, ' ');
+	if (!cmd_args)
+		return (free(cmd), free(tmp), NULL);
+	free(tmp);
+	return (cmd_args);
+}
+
+t_tree    *new_node(t_commands *li, char **args, char **envp, int *i)
 {
 	t_tree    *tr;
 
@@ -78,13 +112,21 @@ t_tree    *new_node(char **args, char **envp)
         ft_putendl_fd("Erreur allocation memoire.", 2);
         exit(EXIT_FAILURE);
     }
-    tr->path = NULL;
-	tr->args = NULL;
+	if (li->mod == 1)
+	{
+    	tr->path = ft_find_cmd(args[0]);
+		tr->args = split_args(li, args, i);
+	}
+	else
+	{
+		tr->path = ft_find_cmd(args[li->index]);
+		tr->args = split_args(li, args + li->index, i);
+	}
 	tr->env = envp;
 	tr->is_pipe = NULL;
     tr->tleft = NULL;
     tr->tright = NULL;
-    tr->parent = NULL;
+    tr->parent = li->root;
     return (tr);
 }
 
@@ -95,17 +137,20 @@ t_commands	*ft_lstnew(char **args, char **envp, int *i, int mod)
 	li = ft_calloc(sizeof(*li), 1);
 	if (!li)
 		return (NULL);
+	li->index = 1;
+	li->mod = mod;
 	li->root = new_tree(args[*i]);
 	if (mod == 1)
 	{
-		li->root->tleft = new_node(args, envp);
-		li->root->tright = new_node(args, envp);
+		li->root->tleft = new_node(li, args, envp, i);
+		li->root->tright = new_node(li, args, envp, i);
 	}
 	else
 	{
 		li->root->tleft = NULL;
-		li->root->tright = new_node(args, envp);
+		li->root->tright = new_node(li, args, envp, i);
 	}
+	li->index = *i + 1;
 	li->next = NULL;
 	return (li);
 }

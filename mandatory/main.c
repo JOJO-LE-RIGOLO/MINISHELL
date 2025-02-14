@@ -6,11 +6,50 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/14 11:23:24 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:39:33 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/minishell.h"
+
+/**
+ * @brief Fonction juste pour voir si je recupere toute la ligne de commande
+ * 
+ */
+/*void    print_args(char **args)
+{
+    int i;
+
+    i = 0;
+    while (args[i])
+    {
+        printf("%s\n", args[i]);
+        i++;
+    }
+}
+
+void    print_lst(t_commands *li)
+{
+    while (li)
+    {
+        if (li->root->is_pipe)//affichage du pipe
+            printf("%s\n", li->root->is_pipe);
+
+        if (li->root->tleft->path)//affichage de la branche de gauche
+            printf("%s\n", li->root->tleft->path);
+        if (li->root->tleft->args)
+            print_args(li->root->tleft->args);
+
+        printf("\n");
+
+        if (li->root->tright->path)//affichage de la branche de droite
+            printf("%s\n", li->root->tright->path);
+        if (li->root->tright->args)
+            print_args(li->root->tright->args);
+        
+        li = li->next;
+    }
+}*/
 
 /**
  * @brief Permet de regarder si l'utilisateur met exit et ce n'est pas le cas
@@ -34,9 +73,13 @@ void    handle_imput(t_history *h, char *line, char **envp)
         exit(0);
     }
     args = ft_split(line, ' ');
+    //print_args(args);
     if (args)
     {
-        list = ft_ultimate_parse(args, envp, &h);
+        list = ft_ultimate_parse(args, envp);
+        if (!list)
+            return (ft_cleartab(args));
+        //print_lst(list);
         //ft_cleanning(list);
         //ft_start(&h, list);
         ft_cleartab(args);
