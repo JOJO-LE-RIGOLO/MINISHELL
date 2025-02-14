@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/12 20:23:17 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:51:31 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_tree
     char            **args;
     char            **env;
     char            *file1;
-    char            redirections[2];
+    char            *is_pipe;
     int                     mod;
     struct s_tree *tleft;
     struct s_tree *tright;
@@ -56,7 +56,6 @@ typedef struct s_tree
 typedef struct s_commands
 {
     t_tree  *root;
-    int     i;
     struct s_commands   *next;
 }           t_commands;
 
@@ -93,8 +92,8 @@ void    disableRawMode(void);
 void    enableRawMode(void);
 
 /* Fonctions de Parsing */
-t_commands  *ft_ultimate_parse(char *line, char **envp);
-t_commands	*ft_lstnew(char **args, char **envp);
+t_commands  *ft_ultimate_parse(char **args, char **envp, t_history *h);
+t_commands	*ft_lstnew(char **args, char **envp, int *i, int mod);
 t_commands	*ft_lstlast(t_commands *lst);
 void        ft_lstadd_back(t_commands **lst, t_commands *new);
 void        ft_lstclear(t_commands **lst);

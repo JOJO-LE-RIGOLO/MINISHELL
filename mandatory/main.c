@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/13 15:27:44 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:23:24 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 void    handle_imput(t_history *h, char *line, char **envp)
 {
     t_commands  *list;
+    char        **args;
 
     if (ft_strncmp(line, "exit", ft_strlen("exit")) == 0) //si l'utilisateur rentre "exit"
     {
@@ -32,9 +33,15 @@ void    handle_imput(t_history *h, char *line, char **envp)
         disableRawMode();
         exit(0);
     }
-    list = ft_ultimate_parse(line, envp);
-    //ft_start(&h, list);
-    ft_lstclear(&list);
+    args = ft_split(line, ' ');
+    if (args)
+    {
+        list = ft_ultimate_parse(args, envp, &h);
+        //ft_cleanning(list);
+        //ft_start(&h, list);
+        ft_cleartab(args);
+        ft_lstclear(&list);
+    }
 }
 
 /**
@@ -70,5 +77,4 @@ int main(int ac, char **av, char **envp)
             continue ;
         handle_imput(&h, h.tail->line, envp);
     }
-    printf("Bye !\n");
 }

@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:21 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/12 20:35:20 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:54:02 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,40 @@ void    msg_error(char *why)
     ft_putendl_fd(why, 2);
 }
 
-void	ft_verif(t_commands **list, char *str)
+void	ft_verif(t_commands **list, char *str, t_history *h)
 {
 	if ((*list) == NULL || (*list)->root == NULL)
 	{
 		ft_lstclear(list);
+		ft_rl_clear_history(&h);
 		msg_error(str);
 	}
 }
 
-t_commands  *ft_ultimate_parse(char *line, char **envp)
+int	first_commands(char **args, int *i)
+{
+	*i = 0;
+	while (args[*i])
+	{
+		if (ft_strchr(args[*i], '|'))
+			return (*i);
+		(*i)++;
+	}
+	return (0);
+}
+
+t_commands  *ft_ultimate_parse(char **args, char **envp, t_history *h)
 {
     t_commands  *li;
-    char    **args;
     int     i;
 
-    args = ft_split(line, ' ');
-    i = 0;
-    li = ft_lstnew(args, envp);
-    ft_verif(&li, "Error list");
+    i = first_commands(args, &i);
+    li = ft_lstnew(args, envp, &i, 1);
+    ft_verif(&li, "Error list", h);
 	while (args[i])
 	{
-		ft_lstadd_back(&li, ft_lstnew(args, envp));
-		ft_verif(&li, "Error list");
+		ft_lstadd_back(&li, ft_lstnew(args, envp, &i, 2));
+		ft_verif(&li, "Error list", h);
 	}
     ft_cleartab(args);
     return (li);

@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:21:40 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/12 20:32:25 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:53:37 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_tree    *new_tree(char *operation)
     tr->path = NULL;
 	tr->args = NULL;
 	tr->env = NULL;
-	ft_strlcpy(tr->redirections, operation, sizeof(tr->redirections));
+	tr->is_pipe = ft_strdup(operation);
     tr->tleft = NULL;
     tr->tright = NULL;
     tr->parent = NULL;
@@ -80,24 +80,32 @@ t_tree    *new_node(char **args, char **envp)
     }
     tr->path = NULL;
 	tr->args = NULL;
-	tr->env = NULL;
-	tr->redirections[0] = '\0';
+	tr->env = envp;
+	tr->is_pipe = NULL;
     tr->tleft = NULL;
     tr->tright = NULL;
     tr->parent = NULL;
     return (tr);
 }
 
-t_commands	*ft_lstnew(char **args, char **envp)
+t_commands	*ft_lstnew(char **args, char **envp, int *i, int mod)
 {
 	t_commands	*li;
 
 	li = ft_calloc(sizeof(*li), 1);
 	if (!li)
 		return (NULL);
-	li->root = new_tree(args[2]);
-	li->root->tleft = new_node(args, envp);
-	li->root->tright = new_node(args, envp);
+	li->root = new_tree(args[*i]);
+	if (mod == 1)
+	{
+		li->root->tleft = new_node(args, envp);
+		li->root->tright = new_node(args, envp);
+	}
+	else
+	{
+		li->root->tleft = NULL;
+		li->root->tright = new_node(args, envp);
+	}
 	li->next = NULL;
 	return (li);
 }
