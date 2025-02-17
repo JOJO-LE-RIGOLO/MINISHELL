@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/14 16:35:53 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:56:13 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # include <sys/ioctl.h>      // ioctl
 # include <curses.h>         // tgetent, tgetflag, tgetnum, tgetstr
 # include <term.h>           // tgoto, tputs
+# include <limits.h>
 
 /* Structure qui va tout recuperer et pour executer */
 typedef struct s_tree
@@ -102,6 +103,10 @@ int         ft_verif(t_commands **list, char *str);
 char        *ft_find_cmd(char *cmd);
 
 /* Fonctions pour Executer */
+
+/* Builtins */
+void    pwd(void);
+void    cd(char *path);
 
 /* Utils */
 void        msg_error(char *why);

@@ -6,7 +6,7 @@
 #    By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/10 16:10:55 by jotudela         ###   ########.fr        #
+#    Updated: 2025/02/17 13:55:44 by jotudela         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,9 @@ SRC_FILES	= main \
 			ft_readline/ft_printhistory \
 			ft_readline/ft_history \
 			parsing/ft_ultimate_parse \
-			parsing/ft_list
+			parsing/ft_list \
+			builtins/pwd \
+			builtins/cd
 
 SRC_DIR := mandatory
 SRC_MANDATORY := $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
