@@ -6,7 +6,7 @@
 #    By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2024/11/08 13:04:27 by jotudela         ###   ########.fr        #
+#    Updated: 2025/02/17 16:43:52 by jotudela         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 ### ARGUMENTS
 
 NAME		= libft.a
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 CC		= cc
 BONUS_FLAG	= .bonus_compiled
 

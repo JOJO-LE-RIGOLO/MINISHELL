@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:21 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/14 16:37:08 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/17 16:39:15 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_verif(t_commands **list, char *str)
 	return (0);
 }
 
-int	first_commands(char **args, int *i)
+int	first_commands(char **args, int *i, int mod)
 {
 	*i = 0;
 	while (args[*i])
@@ -65,6 +65,8 @@ int	first_commands(char **args, int *i)
 			return (*i);
 		(*i)++;
 	}
+	if (mod == 2)
+		return (*i);
 	return (0);
 }
 
@@ -73,13 +75,13 @@ t_commands  *ft_ultimate_parse(char **args, char **envp)
     t_commands  *li;
     int     i;
 
-    i = first_commands(args, &i);
+    i = first_commands(args, &i, 1);
     li = ft_lstnew(args, envp, &i, 1);
     if (ft_verif(&li, "Error list") == 1)
 		return (NULL);
 	while (args[i])
 	{
-		i = first_commands(args + i, &i);
+		i = first_commands(args + i, &i, 2);
 		ft_lstadd_back(&li, ft_lstnew(args, envp, &i, 2));
 		if (ft_verif(&li, "Error list") == 1)
 			return (NULL);
