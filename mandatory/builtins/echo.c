@@ -1,39 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printhistory.c                                  :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/07 10:34:57 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/18 15:39:31 by jojo             ###   ########.fr       */
+/*   Created: 2025/02/18 14:33:39 by jojo              #+#    #+#             */
+/*   Updated: 2025/02/18 14:46:26 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/**
- * @brief Permet l'affichage du prompt et de la commande.
- * 
- * @param line 
- */
-void print_line(const char *line)
+void    my_echo(char *opt, char *str)
 {
-    print_prompt();
-    write(STDOUT_FILENO, line, ft_strlen(line));
-}
-
-void ft_rl_on_new_line()
-{
-    write(STDOUT_FILENO, "\n", 1);
-}
-
-void ft_rl_replace_line(const char *new_line)
-{
-    write(STDOUT_FILENO, new_line, strlen(new_line));
-}
-
-void ft_rl_redisplay()
-{
-    print_prompt();
+    if (opt)
+        if (ft_strncmp(opt, "-n", ft_strlen("-n")) == 0)
+            return (ft_putstr_fd(str, 1));
+    ft_putendl_fd(opt, 1);
 }

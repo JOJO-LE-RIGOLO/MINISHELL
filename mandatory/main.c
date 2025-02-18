@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/17 16:09:32 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:45:09 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,28 @@ void    print_lst(t_commands *li)
     }
 }*/
 
+char    *pwd2(void)
+{
+    static char cwd[PATH_MAX];  // Tableau pour stocker le chemin courant
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+        return (cwd);
+    return (NULL);
+}
+
+void print_prompt(void)
+{
+    char *current_path = pwd2();
+    
+    if (current_path == NULL)
+        return ;
+    write(1, "\033[31m[", 7);
+    write(1, "\033[34m", 6);
+    write(1, current_path, ft_strlen(current_path));
+    write(1, ">\033[31m]", 8);
+    write(1, "\033[0m ", 6);
+}
+
 /**
  * @brief Permet de regarder si l'utilisateur met exit et ce n'est pas le cas
  * je parse ma/mes commande(s) et je l'envoie a executer.
@@ -61,20 +83,27 @@ void    print_lst(t_commands *li)
  */
 void    handle_imput(t_history *h, char *line, char **envp)
 {
-    t_commands  *list;
+    //t_commands  *list;
     char        **args;
 
+    (void)envp;
     if (ft_strncmp(line, "exit", ft_strlen("exit")) == 0) //si l'utilisateur rentre "exit"
     {
         ft_rl_clear_history(h);
-        write(STDOUT_FILENO, Hello, ft_strlen(Hello));
+        print_prompt();
         write(STDOUT_FILENO, "bye 👋 !\n", 12);
         disableRawMode();
         exit(0);
     }
+    if (ft_strncmp(line, "pwd", ft_strlen("pwd")) == 0)
+        pwd();
     args = ft_split(line, ' ');
+    if (ft_strncmp(line, "cd", ft_strlen("cd")) == 0)
+        cd(args[1]);
+    if (ft_strncmp(line, "echo", ft_strlen("echo")) == 0)
+        my_echo(args[1], args[2]);
     //print_args(args);
-    if (args)
+    /*if (args)
     {
         list = ft_ultimate_parse(args, envp);
         if (!list)
@@ -84,7 +113,7 @@ void    handle_imput(t_history *h, char *line, char **envp)
         //ft_start(&h, list);
         ft_cleartab(args);
         ft_lstclear(&list);
-    }
+    }*/
 }
 
 /**
@@ -107,7 +136,7 @@ int main(int ac, char **av, char **envp)
     setup_signals();
     while (1)
     {
-        write(1, Hello, ft_strlen(Hello));
+        print_prompt();
         ft_readline(&h);
         if (!h.head || !h.head->line)
         {

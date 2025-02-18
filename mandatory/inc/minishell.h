@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/17 13:56:13 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:05:27 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define Hello "\033[31m[\033[34mminishell>\033[31m]\033[0m "
 # define PATH_MAX 4096
 # define CLEAR_LINE "\033[2K\r"
-# define CURSOR_FORWARD "\033[C"
 # define CURSOR_BACKWARD "\033[D"
 
 # include "../../Utils/libft/libft.h"
@@ -83,6 +81,7 @@ void    handle_signals(int signum);
 
 /* Fonctions pour l'Historique et le Terminal */
 char    *ft_readline(t_history *history);
+void    print_prompt(void);
 void    init_history(t_history *history);
 void    ft_rl_clear_history(t_history *history);
 void    ft_rl_on_new_line(void);
@@ -107,9 +106,11 @@ char        *ft_find_cmd(char *cmd);
 /* Builtins */
 void    pwd(void);
 void    cd(char *path);
+void    my_echo(char *opt, char *str);
 
 /* Utils */
 void        msg_error(char *why);
 void        ft_cleartab(char **args);
+char        *pwd2(void);
 
 #endif

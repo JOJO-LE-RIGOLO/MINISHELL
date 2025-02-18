@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ultimate_parse.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 15:16:21 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/17 16:39:15 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:36:51 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_find_cmd(char *cmd)
 
 void    msg_error(char *why)
 {
-    write(STDERR_FILENO, Hello, ft_strlen(Hello));
+    print_prompt();
     ft_putendl_fd(why, 2);
 }
 

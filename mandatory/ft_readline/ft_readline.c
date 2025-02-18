@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:27:22 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/13 19:20:40 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:37:50 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void    rm_line(char *buffer)
+{
+    int len;
+    
+    len = ft_strlen(buffer) + ft_strlen(pwd2()) + 4;
+    while (len > 0)//permet de suprimer tout ce qu'il y a sur le terminal
+    {
+        write(STDOUT_FILENO, "\b \b", 3);
+        len--;
+    }
+}
 
 /**
  * @brief Permet de monter dans les anciennes commande dans le terminal.
@@ -27,7 +39,7 @@ static void handle_arrow_up(t_history *history, char *buffer, int *pos)
         history->current = history->tail;
     else if (history->current->prev)
         history->current = history->current->prev;
-    write(1, "\33[2K\r", 5);
+    rm_line(buffer);
     if (history->current)
         ft_strlcpy(buffer, history->current->line, BUFFER_SIZE);
     else
@@ -51,7 +63,7 @@ static void handle_arrow_down(t_history *history, char *buffer, int *pos)
         history->current = history->current->next;
     else
         history->current = NULL;
-    write(1, "\33[2K\r", 5);
+    rm_line(buffer);
     if (history->current)
         ft_strlcpy(buffer, history->current->line, BUFFER_SIZE);
     else
@@ -100,33 +112,29 @@ static void handle_arrow_keys(t_history *history, char *buffer, int *pos, char d
  * @param pos 
  * @param c 
  */
-static int handle_character_input(char *buffer, int *pos, char c)
+static void handle_character_input(char *buffer, int *pos, char c)
 {
     int current_len;
     int i;
 
     if (!buffer || !pos)
-        return (-1);
+        return ;
     current_len = (int)ft_strlen(buffer);
     if (current_len >= BUFFER_SIZE - 2)
-        return (0);
+        return ;
     if (*pos < current_len)
         ft_memmove(&buffer[*pos + 1], &buffer[*pos], current_len - *pos);
     buffer[*pos] = c;
     (*pos)++;
     buffer[current_len + 1] = '\0';
-    if (write(STDOUT_FILENO, CLEAR_LINE, 5) < 0 ||
-        write(STDOUT_FILENO, Hello, ft_strlen(Hello)) < 0 ||
-        write(STDOUT_FILENO, buffer, current_len + 1) < 0)
-        return (-1);
+    write(STDOUT_FILENO, CLEAR_LINE, 5);
+    print_line(buffer);
     i = current_len + 1;
     while (i > *pos)
     {
-        if (write(STDOUT_FILENO, CURSOR_BACKWARD, 3) < 0)
-            return (-1);
+        write(STDOUT_FILENO, CURSOR_BACKWARD, 3);
         i--;
     }
-    return (0);
 }
 
 /**
@@ -135,32 +143,28 @@ static int handle_character_input(char *buffer, int *pos, char c)
  * @param buffer 
  * @param pos 
  */
-static int handle_backspace(char *buffer, int *pos)
+static void handle_backspace(char *buffer, int *pos)
 {
     size_t remaining_len;
     size_t i;
 
     if (!buffer || !pos)
-        return (-1);
+        return ;
     if (*pos <= 0)
-        return (0);
+        return ;
     (*pos)--;
     remaining_len = ft_strlen(buffer + *pos);
     if (ft_memmove(&buffer[*pos], &buffer[*pos + 1], remaining_len) == NULL)
-        return (-1);
+        return ;
     buffer[ft_strlen(buffer)] = '\0';
-    if (write(STDOUT_FILENO, CLEAR_LINE, 5) < 0 ||
-        write(STDOUT_FILENO, Hello, ft_strlen(Hello)) < 0 ||
-        write(STDOUT_FILENO, buffer, ft_strlen(buffer)) < 0)
-        return (-1);
+    write(STDOUT_FILENO, CLEAR_LINE, 5);
+    print_line(buffer);
     i = ft_strlen(buffer);
     while ((int)i > *pos)
     {
-        if (write(STDOUT_FILENO, CURSOR_BACKWARD, 3) < 0)
-            return (-1);
+        write(STDOUT_FILENO, CURSOR_BACKWARD, 3);
         i--;
     }
-    return (0);
 }
 
 /**
@@ -181,7 +185,6 @@ char *ft_readline(t_history *history)
     {
         if (read(STDIN_FILENO, &c, 1) != 1)
             continue;
-
         if (c == '\n')
         {
             buffer[ft_strlen(buffer)] = '\0';  // Terminer la ligne proprement
