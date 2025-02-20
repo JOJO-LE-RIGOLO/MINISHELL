@@ -3,53 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/18 14:45:09 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/20 15:20:54 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/minishell.h"
-
-/**
- * @brief Fonction juste pour voir si je recupere toute la ligne de commande
- * 
- */
-/*void    print_args(char **args)
-{
-    int i;
-
-    i = 0;
-    while (args[i])
-    {
-        printf("%s\n", args[i]);
-        i++;
-    }
-}
-
-void    print_lst(t_commands *li)
-{
-    while (li)
-    {
-        if (li->root->is_pipe)//affichage du pipe
-            printf("%s\n", li->root->is_pipe);
-
-        if (li->root->tleft->path)//affichage de la branche de gauche
-            printf("%s\n", li->root->tleft->path);
-        if (li->root->tleft->args)
-            print_args(li->root->tleft->args);
-
-        printf("\n");
-
-        if (li->root->tright->path)//affichage de la branche de droite
-            printf("%s\n", li->root->tright->path);
-        if (li->root->tright->args)
-            print_args(li->root->tright->args);
-        
-        li = li->next;
-    }
-}*/
 
 char    *pwd2(void)
 {
@@ -71,6 +32,20 @@ void print_prompt(void)
     write(1, current_path, ft_strlen(current_path));
     write(1, ">\033[31m]", 8);
     write(1, "\033[0m ", 6);
+}
+
+void    free_tab(char **args)
+{
+    int i;
+
+    i = 0;
+    while (args[i])
+    {
+        free(args[i]);
+        i++;
+    }
+    free(args);
+    args = NULL;
 }
 
 /**
@@ -95,25 +70,13 @@ void    handle_imput(t_history *h, char *line, char **envp)
         disableRawMode();
         exit(0);
     }
-    if (ft_strncmp(line, "pwd", ft_strlen("pwd")) == 0)
-        pwd();
     args = ft_split(line, ' ');
-    if (ft_strncmp(line, "cd", ft_strlen("cd")) == 0)
-        cd(args[1]);
-    if (ft_strncmp(line, "echo", ft_strlen("echo")) == 0)
-        my_echo(args[1], args[2]);
-    //print_args(args);
-    /*if (args)
+    if (args)
     {
-        list = ft_ultimate_parse(args, envp);
-        if (!list)
-            return (ft_cleartab(args));
-        //print_lst(list);
-        //ft_cleanning(list);
-        //ft_start(&h, list);
-        ft_cleartab(args);
-        ft_lstclear(&list);
-    }*/
+        if (builtins(line, args) == 0)
+            return (free_tab(args));
+        free_tab(args);
+    }
 }
 
 /**

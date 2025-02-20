@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+         #
+#    By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/18 14:38:33 by jojo             ###   ########.fr        #
+#    Updated: 2025/02/20 16:16:20 by jotudela         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,9 @@ SRC_FILES	= main \
 			ft_readline/ft_terminal \
 			ft_readline/ft_printhistory \
 			ft_readline/ft_history \
-			parsing/ft_ultimate_parse \
-			parsing/ft_list \
+			parsing/tree \
+			parsing/tokeniser \
+			builtins/builtins \
 			builtins/pwd \
 			builtins/cd \
 			builtins/echo

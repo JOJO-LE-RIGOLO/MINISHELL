@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/20 13:27:38 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:45:00 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,31 @@
 # include <term.h>           // tgoto, tputs
 # include <limits.h>
 
+typedef enum s_node
+{
+    inpout,
+    output,
+    here_doc,
+    output_append,
+    PIPE,
+    double_pipe,
+    environnement_var,
+    val_output_cmd,
+    double_and,
+    command,
+    opt,
+    arg,
+    file,
+}           type_node;
+
+/* Liste chainee pour les tokens */
+typedef struct s_tokens
+{
+    char        *str;
+    type_node   type;
+    struct s_tokens    *next;
+}           t_tokens;
+
 /* Structure qui va tout recuperer et pour executer */
 typedef struct s_tree
 {
@@ -45,7 +70,7 @@ typedef struct s_tree
     char            **args;
     char            **env;
     char            *file1;
-    char            *is_pipe;
+    char            *rediction;
     struct s_tree *tleft;
     struct s_tree *tright;
     struct s_tree *parent;
@@ -86,17 +111,21 @@ void    enableRawMode(void);
 
 /* Fonctions de Parsing */
 
+/** Fonctions pour tokeniser **/
+t_tokens    *tokeniser(char **args);
+t_tokens	*ft_lstnew(char *content, int type);
+void        ft_lstadd_back(t_tokens **lst, t_tokens *new);
+t_tokens	*ft_lstlast(t_tokens *lst);
 
 /* Fonctions pour Executer */
 
 /* Builtins */
+int     builtins(char *line, char **args);
 void    pwd(void);
 void    cd(char *path);
 void    my_echo(char *opt, char *str);
 
 /* Utils */
-void        msg_error(char *why);
-void        ft_cleartab(char **args);
 char        *pwd2(void);
 
 #endif
