@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/18 17:05:27 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/20 13:27:38 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@ typedef struct s_tree
     struct s_tree *parent;
 }           t_tree;
 
-typedef struct s_commands
-{
-    t_tree  *root;
-    int     index;
-    int     mod;
-    struct s_commands   *next;
-}           t_commands;
-
 /* Structure pour l'Historique et le terminal */
 typedef struct s_historique
 {
@@ -93,13 +85,7 @@ void    disableRawMode(void);
 void    enableRawMode(void);
 
 /* Fonctions de Parsing */
-t_commands  *ft_ultimate_parse(char **args, char **envp);
-t_commands	*ft_lstnew(char **args, char **envp, int *i, int mod);
-t_commands	*ft_lstlast(t_commands *lst);
-void        ft_lstadd_back(t_commands **lst, t_commands *new);
-void        ft_lstclear(t_commands **lst);
-int         ft_verif(t_commands **list, char *str);
-char        *ft_find_cmd(char *cmd);
+
 
 /* Fonctions pour Executer */
 
