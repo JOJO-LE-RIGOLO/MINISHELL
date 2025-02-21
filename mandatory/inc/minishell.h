@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/20 16:45:00 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:59:16 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,9 @@ t_tokens    *tokeniser(char **args);
 t_tokens	*ft_lstnew(char *content, int type);
 void        ft_lstadd_back(t_tokens **lst, t_tokens *new);
 t_tokens	*ft_lstlast(t_tokens *lst);
+void        ft_lstclear(t_tokens **lst);
+int         is_type(char *str);
+int         ft_verif_type(t_tokens *lst);
 
 /* Fonctions pour Executer */
 
@@ -126,6 +129,7 @@ void    cd(char *path);
 void    my_echo(char *opt, char *str);
 
 /* Utils */
-char        *pwd2(void);
+char    *pwd2(void);
+void    free_tab(char **args);
 
 #endif

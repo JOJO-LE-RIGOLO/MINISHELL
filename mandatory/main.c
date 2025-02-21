@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/20 15:20:54 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:45:05 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,28 @@ void print_prompt(void)
     write(1, "\033[0m ", 6);
 }
 
-void    free_tab(char **args)
+void    my_exit(t_history *h)
 {
-    int i;
+    ft_rl_clear_history(h);
+    print_prompt();
+    write(STDOUT_FILENO, "bye 👋 !\n", 12);
+    disableRawMode();
+    exit(0);
+}
 
-    i = 0;
-    while (args[i])
+void    print_tokens(t_tokens *t)
+{
+    t_tokens    *tmp;
+
+    tmp = t->next;
+    write(1, "\n", 1);
+    while (tmp)
     {
-        free(args[i]);
-        i++;
+        ft_putnbr_fd(tmp->type, 1);
+        write(1, "\n", 1);
+        ft_putendl_fd(tmp->str, 1);
+        tmp = tmp->next;
     }
-    free(args);
-    args = NULL;
 }
 
 /**
@@ -58,25 +68,25 @@ void    free_tab(char **args)
  */
 void    handle_imput(t_history *h, char *line, char **envp)
 {
-    //t_commands  *list;
     char        **args;
+    //t_tree      *commands;
+    t_tokens    *tokens;
 
     (void)envp;
     if (ft_strncmp(line, "exit", ft_strlen("exit")) == 0) //si l'utilisateur rentre "exit"
-    {
-        ft_rl_clear_history(h);
-        print_prompt();
-        write(STDOUT_FILENO, "bye 👋 !\n", 12);
-        disableRawMode();
-        exit(0);
-    }
+        my_exit(h);
     args = ft_split(line, ' ');
-    if (args)
-    {
-        if (builtins(line, args) == 0)
-            return (free_tab(args));
-        free_tab(args);
-    }
+    if (!args)
+        return ;
+    if (builtins(line, args) == 1)
+        return (free_tab(args));
+    tokens = tokeniser(args);
+    if (!tokens)
+        return (free_tab(args));
+    print_tokens(tokens);
+    //commands = parsing_ast(tokens);
+    //exec(commands);
+    return (free_tab(args), ft_lstclear(&tokens)/*, clear_ast(commands)*/);
 }
 
 /**

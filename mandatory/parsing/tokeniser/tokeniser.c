@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:28:35 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/20 16:29:20 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:36:41 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 void	ft_lstclear(t_tokens **lst)
 {
@@ -19,7 +19,7 @@ void	ft_lstclear(t_tokens **lst)
 	while (*lst)
 	{
 		tmp = (*lst)->next;
-		del((*lst)->str);
+		free((*lst)->str);
 		free(*lst);
 		*lst = tmp;
 	}
@@ -74,6 +74,12 @@ t_tokens    *tokeniser(char **args)
     while (args[i])
     {
         ft_lstadd_back(&list, ft_lstnew(args[i], is_type(args[i])));
-        ft_verif_type(list);
+        if (ft_verif_type(list) == 1)
+		{
+			ft_lstclear(&list);
+			return (NULL);
+		}
+		i++;
     }
+	return (list);
 }

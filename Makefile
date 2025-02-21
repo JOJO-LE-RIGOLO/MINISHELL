@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+         #
+#    By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/20 16:16:20 by jotudela         ###   ########.fr        #
+#    Updated: 2025/02/21 10:56:45 by jojo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,12 +50,13 @@ SRC_FILES	= main \
 			ft_readline/ft_terminal \
 			ft_readline/ft_printhistory \
 			ft_readline/ft_history \
-			parsing/tree \
-			parsing/tokeniser \
 			builtins/builtins \
 			builtins/pwd \
 			builtins/cd \
-			builtins/echo
+			builtins/echo \
+			parsing/tokeniser/tokeniser \
+			parsing/tokeniser/tokeniser_utils1 \
+			parsing/tokeniser/tokeniser_utils2
 
 SRC_DIR := mandatory
 SRC_MANDATORY := $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
