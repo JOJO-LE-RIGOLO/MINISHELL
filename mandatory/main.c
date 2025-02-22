@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 21:48:28 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 22:35:17 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void    handle_imput(t_history *h, char *line, char **envp)
     args = ft_split(line, ' ');
     if (!args)
         return ;
-    if (builtins(line, args) == 1)
+    if (builtins(line, args, envp) == 1)
         return (free_tab(args));
     tokens = tokeniser(args);
     if (!tokens)

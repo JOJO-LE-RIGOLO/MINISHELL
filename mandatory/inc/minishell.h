@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 21:43:39 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 22:35:33 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,11 @@ int         ft_verif_type(t_tokens *lst);
 /* Fonctions pour Executer */
 
 /* Builtins */
-int     builtins(char *line, char **args);
+int     builtins(char *line, char **args, char **envp);
 void    pwd(void);
 void    cd(char *path);
 void    my_echo(char *opt, char *str);
+void    env(char **envp);
 
 /* Utils */
 char    *pwd2(void);
