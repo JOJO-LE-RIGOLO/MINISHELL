@@ -6,7 +6,7 @@
 #    By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/22 22:35:59 by jojo             ###   ########.fr        #
+#    Updated: 2025/02/22 23:06:21 by jojo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRC_FILES	= main \
 			builtins/cd \
 			builtins/echo \
 			builtins/env \
+			builtins/export \
 			parsing/tokeniser/tokeniser \
 			parsing/tokeniser/tokeniser_utils1 \
 			parsing/tokeniser/tokeniser_utils2 \

@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 22:35:33 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 23:10:25 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void    pwd(void);
 void    cd(char *path);
 void    my_echo(char *opt, char *str);
 void    env(char **envp);
+void    export(char **envp);
 
 /* Utils */
 char    *pwd2(void);

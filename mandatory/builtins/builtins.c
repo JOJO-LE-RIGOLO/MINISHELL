@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:14:59 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 22:32:01 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 23:10:39 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@ int    builtins(char *line, char **args, char **envp)
         return (my_echo(args[1], args[2]), 1);
     if (ft_strncmp(line, "env", ft_strlen("env")) == 0)
         env(envp);
+    if (ft_strncmp(line, "export", ft_strlen("export")) == 0)
+        export(envp);
     return (0);
 }

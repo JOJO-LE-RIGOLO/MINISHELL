@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 22:35:17 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 22:41:58 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void    handle_imput(t_history *h, char *line, char **envp)
     //t_tree      *commands;
     t_tokens    *tokens;
 
-    (void)envp;
     if (ft_strncmp(line, "exit", ft_strlen("exit")) == 0) //si l'utilisateur rentre "exit"
         my_exit(h);
     args = ft_split(line, ' ');
