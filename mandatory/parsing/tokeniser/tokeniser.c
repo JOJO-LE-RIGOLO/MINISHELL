@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:28:35 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/21 10:36:41 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 17:53:00 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,15 @@ void	ft_lstadd_back(t_tokens **lst, t_tokens *new)
 		return ;
 	li = ft_lstlast(*lst);
 	if (!li)
+	{
 		*lst = new;
+		new->prev = NULL;
+	}
 	else
+	{
 		li->next = new;
+		new->prev = li;
+	}
 }
 
 t_tokens	*ft_lstnew(char *content, int type)
@@ -61,6 +67,7 @@ t_tokens	*ft_lstnew(char *content, int type)
     if (!li->str)
         return (NULL);
 	li->next = NULL;
+	li->prev = NULL;
 	return (li);
 }
 

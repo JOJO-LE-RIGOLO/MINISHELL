@@ -6,55 +6,33 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/21 11:45:05 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 21:48:28 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/minishell.h"
 
-char    *pwd2(void)
+void print_tree(t_tree *node, int level)
 {
-    static char cwd[PATH_MAX];  // Tableau pour stocker le chemin courant
+    if (node == NULL)
+        return;
 
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-        return (cwd);
-    return (NULL);
-}
+    // Afficher l'indentation pour représenter la profondeur de l'arbre
+    for (int i = 0; i < level; i++) {
+        printf("  ");
+    }
 
-void print_prompt(void)
-{
-    char *current_path = pwd2();
+    // Afficher le type du nœud et son adresse
+    printf("Nœud: %p\n", node);
     
-    if (current_path == NULL)
-        return ;
-    write(1, "\033[31m[", 7);
-    write(1, "\033[34m", 6);
-    write(1, current_path, ft_strlen(current_path));
-    write(1, ">\033[31m]", 8);
-    write(1, "\033[0m ", 6);
-}
+    // Si le nœud a un enfant gauche, afficher récursivement
+    if (node->tleft) {
+        print_tree(node->tleft, level + 1);
+    }
 
-void    my_exit(t_history *h)
-{
-    ft_rl_clear_history(h);
-    print_prompt();
-    write(STDOUT_FILENO, "bye 👋 !\n", 12);
-    disableRawMode();
-    exit(0);
-}
-
-void    print_tokens(t_tokens *t)
-{
-    t_tokens    *tmp;
-
-    tmp = t->next;
-    write(1, "\n", 1);
-    while (tmp)
-    {
-        ft_putnbr_fd(tmp->type, 1);
-        write(1, "\n", 1);
-        ft_putendl_fd(tmp->str, 1);
-        tmp = tmp->next;
+    // Si le nœud a un enfant droit, afficher récursivement
+    if (node->tright) {
+        print_tree(node->tright, level + 1);
     }
 }
 
@@ -83,8 +61,8 @@ void    handle_imput(t_history *h, char *line, char **envp)
     tokens = tokeniser(args);
     if (!tokens)
         return (free_tab(args));
-    print_tokens(tokens);
-    //commands = parsing_ast(tokens);
+    //commands = parsing_ast(tokens, envp);
+    //print_tree(commands, 0);
     //exec(commands);
     return (free_tab(args), ft_lstclear(&tokens)/*, clear_ast(commands)*/);
 }
@@ -109,7 +87,7 @@ int main(int ac, char **av, char **envp)
     setup_signals();
     while (1)
     {
-        print_prompt();
+        print_prompt(NULL);
         ft_readline(&h);
         if (!h.head || !h.head->line)
         {

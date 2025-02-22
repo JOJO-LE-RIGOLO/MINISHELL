@@ -6,7 +6,7 @@
 #    By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/21 10:56:45 by jojo             ###   ########.fr        #
+#    Updated: 2025/02/22 16:43:36 by jojo             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ BLUE				:= \033[94m
 
 # SRC
 SRC_FILES	= main \
-			ft_signal \
+			main_utils \
+			signals/ft_signal \
 			ft_readline/ft_readline \
 			ft_readline/ft_terminal \
 			ft_readline/ft_printhistory \
@@ -56,7 +57,9 @@ SRC_FILES	= main \
 			builtins/echo \
 			parsing/tokeniser/tokeniser \
 			parsing/tokeniser/tokeniser_utils1 \
-			parsing/tokeniser/tokeniser_utils2
+			parsing/tokeniser/tokeniser_utils2 \
+			parsing/tree/tree \
+			parsing/tree/tree_utils
 
 SRC_DIR := mandatory
 SRC_MANDATORY := $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))

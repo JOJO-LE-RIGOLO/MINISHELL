@@ -6,11 +6,11 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:41:39 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/09 19:03:13 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/21 14:58:45 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/minishell.h"
+#include "../inc/minishell.h"
 
 void	handle_signals(int signum)
 {

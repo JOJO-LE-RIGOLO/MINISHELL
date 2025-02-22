@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/21 10:59:16 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 21:43:39 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,19 @@
 
 typedef enum s_node
 {
-    inpout,
-    output,
-    here_doc,
-    output_append,
-    PIPE,
-    double_pipe,
-    environnement_var,
-    val_output_cmd,
-    double_and,
-    command,
-    opt,
-    arg,
-    file,
+    input,// <
+    output,// >
+    here_doc,// <<
+    output_append,// >>
+    PIPE,// |
+    double_pipe,// ||
+    environnement_var,// $
+    val_output_cmd,// &?
+    double_and,// &&
+    command,// cat
+    opt,// -l
+    arg,// tout le reste
+    file,// file1
 }           type_node;
 
 /* Liste chainee pour les tokens */
@@ -61,22 +61,23 @@ typedef struct s_tokens
     char        *str;
     type_node   type;
     struct s_tokens    *next;
+    struct s_tokens    *prev;
 }           t_tokens;
 
-/* Structure qui va tout recuperer et pour executer */
+/* Structure qui va tout recuperer et tout executer */
 typedef struct s_tree
 {
     char            *path;
     char            **args;
     char            **env;
-    char            *file1;
+    char            *file;
     char            *rediction;
     struct s_tree *tleft;
     struct s_tree *tright;
     struct s_tree *parent;
 }           t_tree;
 
-/* Structure pour l'Historique et le terminal */
+/* Structures pour l'Historique et le terminal */
 typedef struct s_historique
 {
     char    *line;
@@ -98,18 +99,22 @@ void    handle_signals(int signum);
 
 /* Fonctions pour l'Historique et le Terminal */
 char    *ft_readline(t_history *history);
-void    print_prompt(void);
+void    print_prompt(t_history *h);
 void    init_history(t_history *history);
 void    ft_rl_clear_history(t_history *history);
 void    ft_rl_on_new_line(void);
 void    ft_rl_replace_line(const char *new_line);
 void    ft_rl_redisplay(void);
-void    print_line(const char *line);
+void    print_line(const char *line, t_history *h);
 void    ft_add_history(t_history *history, const char *line);
 void    disableRawMode(void);
 void    enableRawMode(void);
 
 /* Fonctions de Parsing */
+t_tree      *parsing_ast(t_tokens *tokens, char **envp);
+t_tree      *create_tree(char **envp);
+int         update_tree(t_tree **node, t_tokens *token);
+void        clear_ast(t_tree *commands);
 
 /** Fonctions pour tokeniser **/
 t_tokens    *tokeniser(char **args);
@@ -131,5 +136,7 @@ void    my_echo(char *opt, char *str);
 /* Utils */
 char    *pwd2(void);
 void    free_tab(char **args);
+void    my_exit(t_history *h);
+char	*ft_find_cmd(char *cmd);
 
 #endif

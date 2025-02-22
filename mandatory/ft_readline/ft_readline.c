@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:27:22 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/18 17:37:50 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 21:41:44 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void handle_arrow_up(t_history *history, char *buffer, int *pos)
     else
         buffer[0] = '\0';
     *pos = ft_strlen(buffer);
-    print_line(buffer);
+    print_line(buffer, NULL);
 }
 
 /**
@@ -69,7 +69,7 @@ static void handle_arrow_down(t_history *history, char *buffer, int *pos)
     else
         buffer[0] = '\0';
     *pos = ft_strlen(buffer);
-    print_line(buffer);
+    print_line(buffer, NULL);
 }
 
 /**
@@ -112,7 +112,7 @@ static void handle_arrow_keys(t_history *history, char *buffer, int *pos, char d
  * @param pos 
  * @param c 
  */
-static void handle_character_input(char *buffer, int *pos, char c)
+static void handle_character_input(char *buffer, int *pos, char c, t_history *h)
 {
     int current_len;
     int i;
@@ -128,7 +128,7 @@ static void handle_character_input(char *buffer, int *pos, char c)
     (*pos)++;
     buffer[current_len + 1] = '\0';
     write(STDOUT_FILENO, CLEAR_LINE, 5);
-    print_line(buffer);
+    print_line(buffer, h);
     i = current_len + 1;
     while (i > *pos)
     {
@@ -143,7 +143,7 @@ static void handle_character_input(char *buffer, int *pos, char c)
  * @param buffer 
  * @param pos 
  */
-static void handle_backspace(char *buffer, int *pos)
+static void handle_backspace(char *buffer, int *pos, t_history *h)
 {
     size_t remaining_len;
     size_t i;
@@ -158,7 +158,7 @@ static void handle_backspace(char *buffer, int *pos)
         return ;
     buffer[ft_strlen(buffer)] = '\0';
     write(STDOUT_FILENO, CLEAR_LINE, 5);
-    print_line(buffer);
+    print_line(buffer, h);
     i = ft_strlen(buffer);
     while ((int)i > *pos)
     {
@@ -215,9 +215,9 @@ char *ft_readline(t_history *history)
         }
         if (c == 127)  
         {
-            handle_backspace(buffer, &pos);
+            handle_backspace(buffer, &pos, history);
             continue;
         }
-        handle_character_input(buffer, &pos, c);
+        handle_character_input(buffer, &pos, c, history);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:19:33 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/21 11:42:01 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/22 17:42:12 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void    free_tab(char **args)
     args = NULL;
 }
 
-static char	*ft_find_cmd(char *cmd)
+char	*ft_find_cmd(char *cmd)
 {
 	char	**dirs;
 	char	*full_path;
@@ -75,7 +75,7 @@ static int is_file(char *file)
 int is_type(char *str)
 {
     if (ft_strncmp(str, "<", ft_strlen(str)) == 0)
-        return (inpout);
+        return (input);
     else if (ft_strncmp(str, ">", ft_strlen(str)) == 0)
         return (output);
     else if (ft_strncmp(str, "<<", ft_strlen(str)) == 0)
