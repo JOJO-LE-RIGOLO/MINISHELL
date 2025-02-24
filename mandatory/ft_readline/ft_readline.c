@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:27:22 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 21:41:44 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 22:43:26 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void    rm_line(char *buffer)
     int len;
     
     len = ft_strlen(buffer) + ft_strlen(pwd2()) + 4;
+    write(STDOUT_FILENO, "\33[2K\r", 4);
     while (len > 0)//permet de suprimer tout ce qu'il y a sur le terminal
     {
         write(STDOUT_FILENO, "\b \b", 3);
@@ -45,7 +46,8 @@ static void handle_arrow_up(t_history *history, char *buffer, int *pos)
     else
         buffer[0] = '\0';
     *pos = ft_strlen(buffer);
-    print_line(buffer, NULL);
+    write(STDOUT_FILENO, CLEAR_LINE, 5);
+    print_line(buffer, history);
 }
 
 /**
@@ -69,7 +71,8 @@ static void handle_arrow_down(t_history *history, char *buffer, int *pos)
     else
         buffer[0] = '\0';
     *pos = ft_strlen(buffer);
-    print_line(buffer, NULL);
+    write(STDOUT_FILENO, CLEAR_LINE, 5);
+    print_line(buffer, history);
 }
 
 /**
@@ -185,11 +188,19 @@ char *ft_readline(t_history *history)
     {
         if (read(STDIN_FILENO, &c, 1) != 1)
             continue;
+        if (c == 3) // ASCII pour ^C
+        {
+            write(STDOUT_FILENO, "\n", 1); // Retour à la ligne
+            ft_memset(buffer, 0, BUFFER_SIZE); // Vide le buffer
+            pos = 0;
+            ft_rl_redisplay(); // Redessine le prompt
+            continue; // Retourne au début de la boucle
+        }
         if (c == '\n')
         {
             buffer[ft_strlen(buffer)] = '\0';  // Terminer la ligne proprement
             write(STDOUT_FILENO, "\n", 1);
-            if (pos == 0)  // Si la ligne est vide, on redessine le prompt
+            if (pos == 0 && !buffer[0])  // Si la ligne est vide, on redessine le prompt
             {
                 ft_rl_redisplay();
                 continue;

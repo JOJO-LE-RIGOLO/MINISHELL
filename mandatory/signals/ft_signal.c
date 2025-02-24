@@ -6,7 +6,7 @@
 /*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:41:39 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/21 14:58:45 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 22:19:58 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ void	handle_signals(int signum)
 	(void)signum;
 	if (waitpid(-1, NULL, WNOHANG) == -1)
 	{
-		write(STDOUT_FILENO, "^C", 2);
-		ft_rl_on_new_line();
-		ft_rl_replace_line("");
-		ft_rl_redisplay();
+		write(STDOUT_FILENO, "^C\n", 3);
+		print_prompt(NULL);
 	}
 }
 
