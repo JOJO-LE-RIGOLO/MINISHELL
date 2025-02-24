@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+         #
+#    By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/22 23:06:21 by jojo             ###   ########.fr        #
+#    Updated: 2025/02/24 14:34:06 by jotudela         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,11 +57,12 @@ SRC_FILES	= main \
 			builtins/echo \
 			builtins/env \
 			builtins/export \
+			parsing/tree/tree \
+			parsing/tree/tree_utils \
+			parsing/clean_args/cleanning_args \
 			parsing/tokeniser/tokeniser \
 			parsing/tokeniser/tokeniser_utils1 \
-			parsing/tokeniser/tokeniser_utils2 \
-			parsing/tree/tree \
-			parsing/tree/tree_utils
+			parsing/tokeniser/tokeniser_utils2
 
 SRC_DIR := mandatory
 SRC_MANDATORY := $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))

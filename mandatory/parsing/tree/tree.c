@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:41:02 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 21:00:47 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 13:53:44 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,34 +43,108 @@ int is_redirect(type_node t)
     return (-1);
 }
 
-t_tree  *parsing_ast(t_tokens *tokens, char **envp)
+static int  is_arg_or_file(t_tokens *t)
 {
-    t_tree  *ast;
-    t_tree  *tmp;
-    t_tree  *current;
+    //arg
+    if (t->type == arg)
+        return (arg);
+    //file
+    if (t->type == file)
+        return (file);
+    return (-1);
+}
 
-    ast = create_tree(envp); // racine de l'AST
-    current = ast;
-    tokens = tokens->next; // on commence après le premier token (peut-être un "commande")
+t_tree *parsing_ast(t_tokens *tokens, char **envp)
+{
+    if (!tokens || !envp)
+        return NULL;
+
+    t_tree *ast = NULL;
+    t_tree *current = NULL;
+    t_tokens *head = tokens;
+    
+    while (tokens && tokens->type != command)
+        tokens = tokens->next;
+    if (tokens)
+    {
+        t_tree *cmd = create_tree(envp);
+        if (!cmd)
+            return NULL;
+        cmd->type = tokens->type;
+        ast = cmd;
+        current = ast;
+    }
+    tokens = head->next;
     while (tokens)
     {
-        if (is_redirect(tokens->type) != -1) // gestion des redirections
+        if (tokens && is_arg_or_file(tokens) != -1)
         {
-            tmp = create_tree(envp); // créer un sous-arbre pour la redirection
-            tmp->tleft = current; // assigner le sous-arbre à gauche du nœud actuel
-            current->parent = tmp; // lier le nœud actuel comme parent du nouveau nœud
-            current = tmp; // déplacer le pointeur current au nouveau nœud
+            t_tree *file = create_tree(envp);
+            if (!file)
+            {
+                clear_ast(ast);
+                return NULL;
+            }
+            file->type = tokens->type;
+            current->tright = file;
+            file->parent = current;
         }
-        else if (tokens->type == PIPE) // gestion des pipes
+        if (is_redirect(tokens->type) != -1)
         {
-            tmp = create_tree(envp); // créer un nœud pour le pipe
-            tmp->tleft = current; // assigner le nœud courant à gauche du pipe
-            current->parent = tmp; // lier le nœud courant comme parent du nœud pipe
-            current = tmp; // mettre à jour current pour le pipe
+            t_tree *redir = create_tree(envp);
+            if (!redir)
+            {
+                clear_ast(ast);
+                return NULL;
+            }
+            redir->type = tokens->type;
+            if (current && current->type == command)
+            {
+                redir->tleft = current;
+                if (current == ast)
+                    ast = redir;
+                else if (current->parent)
+                    current->parent->tright = redir;
+                redir->parent = current->parent;
+                current->parent = redir;
+                current = redir;
+            }
         }
-        tokens = tokens->next; // passer au token suivant
+        else if (tokens->type == PIPE)
+        {
+            t_tree *pipe = create_tree(envp);
+            if (!pipe)
+            {
+                clear_ast(ast);
+                return NULL;
+            }
+            pipe->type = tokens->type;
+            pipe->tleft = ast;
+            ast->parent = pipe;
+            ast = pipe;
+            current = pipe;
+            // Chercher la commande suivante
+            tokens = tokens->next;
+            while (tokens && tokens->type != command)
+                tokens = tokens->next;
+            if (tokens)
+            {
+                t_tree *cmd = create_tree(envp);
+                if (!cmd)
+                {
+                    clear_ast(ast);
+                    return NULL;
+                }
+                cmd->type = tokens->type;
+                current->tright = cmd;
+                cmd->parent = current;
+                current = cmd;
+            }
+        }
+        if (tokens)
+            tokens = tokens->next;
     }
-    return ast; // retourner l'arbre complet
+    return ast;
 }
 
 void    clear_ast(t_tree *commands)

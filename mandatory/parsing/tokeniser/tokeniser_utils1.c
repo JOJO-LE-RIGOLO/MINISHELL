@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:19:33 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 17:42:12 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 15:16:58 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_find_cmd(char *cmd)
 	return (free_tab(dirs), NULL);
 }
 
-static int is_command(char *cmd)
+int is_command(char *cmd)
 {
     char    *cmd_path;
 
@@ -65,7 +65,7 @@ static int is_command(char *cmd)
     return (free(cmd_path), 1);
 }
 
-static int is_file(char *file)
+int is_file(char *file)
 {
     if (access(file, F_OK) == 0)
         return (0);
@@ -75,7 +75,7 @@ static int is_file(char *file)
 int is_type(char *str)
 {
     if (ft_strncmp(str, "<", ft_strlen(str)) == 0)
-        return (input);
+        return (free(str), input);
     else if (ft_strncmp(str, ">", ft_strlen(str)) == 0)
         return (output);
     else if (ft_strncmp(str, "<<", ft_strlen(str)) == 0)

@@ -1,20 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokeniser_utils2.c                                 :+:      :+:    :+:   */
+/*   cleanning_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 10:23:21 by jojo              #+#    #+#             */
-/*   Updated: 2025/02/24 14:37:12 by jotudela         ###   ########.fr       */
+/*   Created: 2025/02/24 13:58:24 by jotudela          #+#    #+#             */
+/*   Updated: 2025/02/24 17:12:55 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int ft_verif_type(t_tokens *lst)
+char *clean_arg(char *arg)
 {
-    if (!lst || !lst->type || !lst->str || lst->type < 0)
-        return (1);
-    return (0);
+    int i = 0;
+    int j = 0;
+    int l = (int)strlen(arg);
+
+    if (arg[0] == '"' && arg[l - 1] == '"')
+    {
+        i = 1;
+        l -= 1;
+    }
+    while (i < l)
+        arg[j++] = arg[i++];
+    arg[j] = '\0';
+    return (arg);
+}
+
+void    clean_args(char **args)
+{
+    int i;
+
+    i = 0;
+    while (args[i])
+    {
+        args[i] = clean_arg(args[i]);
+        i++;
+    }
 }

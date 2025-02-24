@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:28:35 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 17:53:00 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 15:15:23 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_tokens	*ft_lstnew(char *content, int type)
     li->type = type;
 	li->str = ft_strdup(content);
     if (!li->str)
-        return (NULL);
+		return (NULL);
 	li->next = NULL;
 	li->prev = NULL;
 	return (li);

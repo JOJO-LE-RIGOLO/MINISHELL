@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 23:10:25 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 17:21:58 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_tree
     char            **env;
     char            *file;
     char            *rediction;
+    type_node       type;
     struct s_tree *tleft;
     struct s_tree *tright;
     struct s_tree *parent;
@@ -116,6 +117,10 @@ t_tree      *create_tree(char **envp);
 int         update_tree(t_tree **node, t_tokens *token);
 void        clear_ast(t_tree *commands);
 
+/* Fonctions poour netoyer chaque arguments */
+void        clean_args(char **args);
+char        *clean_arg(char *arg);
+
 /** Fonctions pour tokeniser **/
 t_tokens    *tokeniser(char **args);
 t_tokens	*ft_lstnew(char *content, int type);
@@ -123,12 +128,14 @@ void        ft_lstadd_back(t_tokens **lst, t_tokens *new);
 t_tokens	*ft_lstlast(t_tokens *lst);
 void        ft_lstclear(t_tokens **lst);
 int         is_type(char *str);
+int         is_file(char *file);
+int         is_command(char *cmd);
 int         ft_verif_type(t_tokens *lst);
 
 /* Fonctions pour Executer */
 
 /* Builtins */
-int     builtins(char *line, char **args, char **envp);
+int     builtins(char **args, char **envp);
 void    pwd(void);
 void    cd(char *path);
 void    my_echo(char *opt, char *str);
@@ -140,5 +147,7 @@ char    *pwd2(void);
 void    free_tab(char **args);
 void    my_exit(t_history *h);
 char	*ft_find_cmd(char *cmd);
+void    print_var(char *src, int mod);
+void    print_unless_quotes(char *str, int mod);
 
 #endif

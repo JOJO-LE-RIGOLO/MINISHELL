@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/22 22:41:58 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/24 17:42:04 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void print_tree(t_tree *node, int level)
     }
 
     // Afficher le type du nœud et son adresse
-    printf("Nœud: %p\n", node);
-    
+    printf("Nœud: %p %i\n", node, node->type);
+
     // Si le nœud a un enfant gauche, afficher récursivement
     if (node->tleft) {
         print_tree(node->tleft, level + 1);
@@ -33,6 +33,15 @@ void print_tree(t_tree *node, int level)
     // Si le nœud a un enfant droit, afficher récursivement
     if (node->tright) {
         print_tree(node->tright, level + 1);
+    }
+}
+
+void    pirnt_tokens(t_tokens *t)
+{
+    while (t)
+    {
+        ft_printf("%s %i\n", t->str, t->type);
+        t = t->next;
     }
 }
 
@@ -55,15 +64,18 @@ void    handle_imput(t_history *h, char *line, char **envp)
     args = ft_split(line, ' ');
     if (!args)
         return ;
-    if (builtins(line, args, envp) == 1)
+    clean_args(args);
+    if (builtins(args, envp) == 1)
         return (free_tab(args));
     tokens = tokeniser(args);
     if (!tokens)
         return (free_tab(args));
-    //commands = parsing_ast(tokens, envp);
+    free_tab(args);
+    pirnt_tokens(tokens);
+    //commands = parsing_ast(tokens->next, envp);
     //print_tree(commands, 0);
     //exec(commands);
-    return (free_tab(args), ft_lstclear(&tokens)/*, clear_ast(commands)*/);
+    return (ft_lstclear(&tokens)/*, clear_ast(commands)*/);
 }
 
 /**
