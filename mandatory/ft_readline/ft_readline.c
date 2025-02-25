@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:27:22 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/24 22:43:26 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/25 10:07:42 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,14 +188,6 @@ char *ft_readline(t_history *history)
     {
         if (read(STDIN_FILENO, &c, 1) != 1)
             continue;
-        if (c == 3) // ASCII pour ^C
-        {
-            write(STDOUT_FILENO, "\n", 1); // Retour à la ligne
-            ft_memset(buffer, 0, BUFFER_SIZE); // Vide le buffer
-            pos = 0;
-            ft_rl_redisplay(); // Redessine le prompt
-            continue; // Retourne au début de la boucle
-        }
         if (c == '\n')
         {
             buffer[ft_strlen(buffer)] = '\0';  // Terminer la ligne proprement

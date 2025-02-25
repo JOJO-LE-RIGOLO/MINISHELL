@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:28:35 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/24 15:15:23 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:42:42 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_tokens    *tokeniser(char **args)
 
     i = 0;
     list = ft_lstnew("", -1);
+	clean_args(args);
     while (args[i])
     {
         ft_lstadd_back(&list, ft_lstnew(args[i], is_type(args[i])));

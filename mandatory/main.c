@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/24 22:58:25 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/25 11:39:01 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void print_tree(t_tree *node, int level)
     }
 }
 
-void    pirnt_tokens(t_tokens *t)
+void    print_tokens(t_tokens *t)
 {
     while (t)
     {
@@ -64,14 +64,13 @@ void    handle_imput(t_history *h, char *line, char **envp)
     args = ft_split(line, ' ');
     if (!args)
         return ;
-    clean_args(args);
     if (builtins(args, envp) == 1)
         return (free_tab(args));
     tokens = tokeniser(args);
     if (!tokens)
-        return (free_tab(args));
-    free_tab(args);
-    pirnt_tokens(tokens);
+        return (free_tab(args)); 
+    print_tokens(tokens);
+    ft_lstclear(&tokens); // Clear tokens after printing
     //commands = parsing_ast(tokens->next, envp);
     //print_tree(commands, 0);
     //exec(commands);
