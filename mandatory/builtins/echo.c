@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:33:39 by jojo              #+#    #+#             */
-/*   Updated: 2025/02/24 17:22:04 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:59:54 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void print_var(char *src, int mod)
 
     if (!src)
         return ;
-    src = ft_strtrim(src, "$");
+    src = ft_strtrim(src, "$\"");
     content = getenv(src);
     if (!content)
     {
@@ -40,7 +40,8 @@ void print_unless_quotes(char *str, int mod)
 
     i = 0;
     while (i++ < (int)ft_strlen(str) - 2)
-        write(1, &str[i], 1);
+        if (str[i] != '\'' || str[i] != '"')
+            write(1, &str[i], 1);
     if (mod == 1)
         ft_putchar_fd('\n', 1);
 }
@@ -53,14 +54,17 @@ void    my_echo(char *opt, char *str)
         {
             if (!str)
                 return ;
-            else if (str[0] == '$')
+            if (str[0] == '$'
+                || (str[0] == '"' && str[1] == '$'))
                 return (print_var(str, 2));
-            else if (str[0] == '\'')
+            else if (ft_strncmp(str, "'", ft_strlen("'")) == 0
+                    || ft_strncmp(str, "\"", ft_strlen("\"")) == 0)
                 return (print_unless_quotes(str, 2));
             return (ft_putstr_fd(str, 1));
         }
     }
-    if (opt[0] == '$')
+    if (opt[0] == '$'
+        || (opt[0] == '"' && opt[1] == '$'))
         return (print_var(opt, 1));
     else if (opt[0] == '\'')
         return (print_unless_quotes(opt, 1));

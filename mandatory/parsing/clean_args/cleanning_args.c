@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanning_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 13:58:24 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/25 11:34:39 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:47:20 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,22 @@
 
 char *clean_arg(char *arg)
 {
-    int i = 0, j = 0;
+    int i = 1, j = 1;
     int l = (int)ft_strlen(arg);
     char *cleaned;
 
-    if ((arg[0] == '"' || arg[0] == '\'') && (arg[l - 1] == '"' || arg[l - 1] == '\''))
-    {
-        i = 1;
-        l -= 1;
-    }
     cleaned = ft_calloc(sizeof(char), l - i + 1);
     if (!cleaned)
         return (NULL);
-    while (i < l)
+    cleaned[0] = arg[0];
+    while (i < l - 1)
     {
         if (arg[i] != '\'' && arg[i] != '"')
             cleaned[j++] = arg[i];
         i++;
     }
-    cleaned[j] = '\0';
+    cleaned[j] = arg[i];
+    cleaned[j + 1] = '\0';
     return (cleaned);
 }
 
@@ -56,11 +53,10 @@ void clean_args(char **args)
         }
         free(args[i]);
         args[i] = ft_strtrim(tmp, charset);
-        free(tmp);
-        if (!args[i])
+        if (is_type(args[i]) == arg)
         {
-            ft_printf("ERROR: Memory allocation failed in ft_strtrim\n");
-            return;
+            free(args[i]);
+            args[i] = tmp;
         }
         i++;
     }

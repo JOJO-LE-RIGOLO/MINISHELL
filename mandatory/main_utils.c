@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:00:35 by jojo              #+#    #+#             */
-/*   Updated: 2025/02/25 11:16:59 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:16:18 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,11 @@ void print_prompt(t_history *h)
         {
             if (!echo_n_active)
             {
-                if (last_line[8] == '$')
+                if (last_line[8] == '$'
+                    || (last_line[8] == '"' && last_line[9] == '$'))
                     print_var(h->tail->line + 9, 2);
                 else if (last_line[8] == '\'')
-                    print_unless_quotes(h->tail->line + 8, 2);
+                    print_unless_quotes(clean_arg(h->tail->line) + 7, 2);
                 else
                     write(1, h->tail->line + 8, ft_strlen(h->tail->line + 8));
                 echo_n_active = 1;
