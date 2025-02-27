@@ -3,68 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:00:35 by jojo              #+#    #+#             */
-/*   Updated: 2025/02/25 18:16:18 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/27 16:42:01 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/minishell.h"
 
-char    *pwd2(void)
+const char *pwd2(void)
 {
-    static char cwd[PATH_MAX];  // Tableau pour stocker le chemin courant
+    static char cwd[PATH_MAX + 3];  // On alloue un peu plus d'espace pour "$ " (+3 pour le terminator et "$ ")
+    size_t len;
 
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
+    if (getcwd(cwd, sizeof(cwd) - 3) != NULL)  // Laisser de la place pour "$ "
+    {
+        len = ft_strlen(cwd);
+        cwd[len] = '$';       // Ajout du '$'
+        cwd[len + 1] = ' ';   // Ajout de l'espace
+        cwd[len + 2] = '\0';  // Terminaison de la chaîne
         return (cwd);
+    }
     return (NULL);
 }
 
-static int print_prompt2(void)
-{
-    char *current_path;
 
-    current_path = pwd2();
-    write(1, "\033[31m[", ft_strlen("\033[31m["));
-    write(1, "\033[34m", ft_strlen("\033[34m"));
-    write(1, current_path, ft_strlen(current_path));
-    write(1, ">\033[31m]", ft_strlen(">\033[31m]"));
-    write(1, "\033[0m ", ft_strlen("\033[0m "));
-    return (0);
-}
-
-void print_prompt(t_history *h)
+void print_prompt(char *str)
 {
     static int echo_n_active = 0;
     char *last_line;
 
-    if (h && h->tail && h->tail->line)
+    if (str)
     {
-        last_line = h->tail->line;
-        if (ft_strncmp(clean_arg(h->tail->line), "echo -n", 6) == 0)
+        last_line = clean_line(str);
+        if (!last_line)
+            return ;
+        if (ft_strncmp(last_line, "echo -n", 8) == 0)
         {
             if (!echo_n_active)
             {
-                if (last_line[8] == '$'
-                    || (last_line[8] == '"' && last_line[9] == '$'))
-                    print_var(h->tail->line + 9, 2);
-                else if (last_line[8] == '\'')
-                    print_unless_quotes(clean_arg(h->tail->line) + 7, 2);
+                if (str[8] == '$'
+                    || (str[8] == '"' && str[9] == '$'))
+                    print_var(str + 9, 2);
+                else if (str[8] == '\'')
+                    print_unless_quotes(last_line + 7, 2, 1);
                 else
-                    write(1, h->tail->line + 8, ft_strlen(h->tail->line + 8));
+                    write(1, str + 8, ft_strlen(str + 8));
                 echo_n_active = 1;
             }
         }
+        free(last_line);
     }
-    echo_n_active = print_prompt2();
+    echo_n_active = 0;
 }
 
-void    my_exit(t_history *h)
+void    my_exit(void)
 {
-    ft_rl_clear_history(h);
     print_prompt(NULL);
     write(STDOUT_FILENO, "bye 👋 !\n", 12);
-    disableRawMode();
+    rl_clear_history();
     exit(0);
 }

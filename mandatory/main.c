@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:16:42 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/25 11:39:01 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:12:47 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void    print_tokens(t_tokens *t)
  * @param line 
  * @param envp 
  */
-void    handle_imput(t_history *h, char *line, char **envp)
+void    handle_imput(char *line, char **envp)
 {
     char        **args;
     //t_tree      *commands;
     t_tokens    *tokens;
 
     if (ft_strncmp(line, "exit", ft_strlen("exit")) == 0) //si l'utilisateur rentre "exit"
-        my_exit(h);
+        my_exit();
     args = ft_split(line, ' ');
     if (!args)
         return ;
@@ -74,7 +74,7 @@ void    handle_imput(t_history *h, char *line, char **envp)
     //commands = parsing_ast(tokens->next, envp);
     //print_tree(commands, 0);
     //exec(commands);
-    return (ft_lstclear(&tokens)/*, clear_ast(commands)*/);
+    return (ft_lstclear(&tokens), free_tab(args)/*, clear_ast(commands)*/);
 }
 
 /**
@@ -87,27 +87,24 @@ void    handle_imput(t_history *h, char *line, char **envp)
  */
 int main(int ac, char **av, char **envp)
 {
-    t_history h;
+    char    *line;
+    char    **env;
 
     (void)av;
     if (ac != 1)
         return (write(2, "Error\nFormat to execute : ./minishell", 38));
-    init_history(&h);
-    enableRawMode();
     setup_signals();
+    env = envp;
     while (1)
     {
-        print_prompt(NULL);
-        ft_readline(&h);
-        if (!h.head || !h.head->line)
+        line = readline(pwd2());  // Demande une entrée à l'utilisateur
+        if (!line)  // Si l'entrée est NULL (Ctrl-D par exemple), on quitte
+            my_exit();
+        if (*line)  // Si l'utilisateur n'a pas rentré une ligne vide
         {
-            printf("bye 👋 !\n");
-            ft_rl_clear_history(&h); // Nettoyage de l'historique avant de quitter
-            disableRawMode();
-            exit(0);
+            add_history(line);  // Ajoute la ligne à l'historique
+            handle_imput(line, env);
         }
-        if (!*(h.head->line)) //si l'utilisateur ne met rien
-            continue ;
-        handle_imput(&h, h.tail->line, envp);
+        free(line);
     }
 }

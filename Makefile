@@ -6,7 +6,7 @@
 #    By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/28 16:48:36 by jtudela           #+#    #+#              #
-#    Updated: 2025/02/24 14:34:06 by jotudela         ###   ########.fr        #
+#    Updated: 2025/02/27 17:13:33 by jotudela         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,10 +47,6 @@ BLUE				:= \033[94m
 SRC_FILES	= main \
 			main_utils \
 			signals/ft_signal \
-			ft_readline/ft_readline \
-			ft_readline/ft_terminal \
-			ft_readline/ft_printhistory \
-			ft_readline/ft_history \
 			builtins/builtins \
 			builtins/pwd \
 			builtins/cd \
@@ -141,5 +137,8 @@ fclean: clean
 re: fclean all
 
 rebonus: fclean bonus
+
+test:
+	valgrind --suppressions=.valgrind.supp ./minishell
 
 .PHONY: all clean fclean re rebonus

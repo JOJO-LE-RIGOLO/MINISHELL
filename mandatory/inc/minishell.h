@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:01:53 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/26 15:46:52 by jojo             ###   ########.fr       */
+/*   Updated: 2025/02/27 16:36:58 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,38 +78,10 @@ typedef struct s_tree
     struct s_tree *parent;
 }           t_tree;
 
-/* Structures pour l'Historique et le terminal */
-typedef struct s_historique
-{
-    char    *line;
-    struct s_historique *next;
-    struct s_historique *prev;
-}           t_historique;
-
-typedef struct 
-{
-    t_historique *head;
-    t_historique *tail;
-    t_historique *current;
-}           t_history;
-
 /* Fonctions pour les signaux */
 void    setup_signals(void);
 void    sigquit_handler(int signum);
 void    handle_signals(int signum);
-
-/* Fonctions pour l'Historique et le Terminal */
-char    *ft_readline(t_history *history);
-void    print_prompt(t_history *h);
-void    init_history(t_history *history);
-void    ft_rl_clear_history(t_history *history);
-void    ft_rl_on_new_line(void);
-void    ft_rl_replace_line(const char *new_line);
-void    ft_rl_redisplay(void);
-void    print_line(const char *line, t_history *h);
-void    ft_add_history(t_history *history, const char *line);
-void    disableRawMode(void);
-void    enableRawMode(void);
 
 /* Fonctions de Parsing */
 t_tree      *parsing_ast(t_tokens *tokens, char **envp);
@@ -120,6 +92,7 @@ void        clear_ast(t_tree *commands);
 /* Fonctions poour netoyer chaque arguments */
 void        clean_args(char **args);
 char        *clean_arg(char *arg);
+char        *clean_line(char *line);
 
 /** Fonctions pour tokeniser **/
 t_tokens    *tokeniser(char **args);
@@ -143,11 +116,12 @@ void    env(char **envp);
 void    export(char **envp);
 
 /* Utils */
-char    *pwd2(void);
+const char    *pwd2(void);
 void    free_tab(char **args);
-void    my_exit(t_history *h);
+void    my_exit(void);
 char	*ft_find_cmd(char *cmd);
+void    print_prompt(char *str);
 void    print_var(char *src, int mod);
-void    print_unless_quotes(char *str, int mod);
+void    print_unless_quotes(char *str, int mod, int len);
 
 #endif
