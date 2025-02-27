@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jojo <jojo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:14:59 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/25 11:11:18 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:46:57 by jojo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int    builtins(char **args, char **envp)
             return (my_echo(args[1], NULL), 1);
     }
     if (ft_strncmp(args[0], "env", ft_strlen(args[0])) == 0)
-        env(envp);
+        return (env(envp), 1);
     if (ft_strncmp(args[0], "export", ft_strlen(args[0])) == 0)
-        export(envp);
+        return (export(envp), 1);
     return (0);
 }
