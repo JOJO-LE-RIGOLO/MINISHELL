@@ -6,7 +6,7 @@
 /*   By: jotudela <jotudela@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 15:28:35 by jotudela          #+#    #+#             */
-/*   Updated: 2025/02/25 10:42:42 by jotudela         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:16:58 by jotudela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_tokens	*ft_lstnew(char *content, int type)
 	if (!li)
 		return (NULL);
     li->type = type;
-	li->str = ft_strdup(content);
+	li->str = clean_arg(content);
     if (!li->str)
 		return (NULL);
 	li->next = NULL;
@@ -78,7 +78,6 @@ t_tokens    *tokeniser(char **args)
 
     i = 0;
     list = ft_lstnew("", -1);
-	clean_args(args);
     while (args[i])
     {
         ft_lstadd_back(&list, ft_lstnew(args[i], is_type(args[i])));
